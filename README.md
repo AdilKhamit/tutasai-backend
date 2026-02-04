@@ -8,6 +8,9 @@
 - WorkCards, Protocols (Workflow)
 - AIAnalysis, ExpertConclusions (Intelligence Layer)
 - API витрина для комитета: `/api/dashboard/committee/`
+- API кабинет дефектоскописта: `/api/dashboard/inspector/`
+- Генерация протокола через ИИ: `/api/protocols/{work_card_id}/generate/`
+- Подпись протокола через НЦА (NCALayer): `/api/protocols/{protocol_id}/sign/`
 
 ## Быстрый старт
 ```bash

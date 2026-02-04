@@ -106,6 +106,13 @@ class LabChiefStatus(models.TextChoices):
 class Protocol(models.Model):
     work_card = models.OneToOneField(WorkCard, on_delete=models.CASCADE, related_name="protocol")
     generated_content = models.JSONField(default=dict, blank=True)
+    manual_content = models.JSONField(default=dict, blank=True)
+    generation_method = models.CharField(
+        max_length=20,
+        choices=[("ai", "AI"), ("manual", "Manual")],
+        default="manual",
+    )
+    draft_text = models.TextField(blank=True)
     inspector_signature = models.TextField(blank=True)
     lab_chief_signature = models.TextField(blank=True)
     lab_chief_status = models.CharField(
@@ -115,6 +122,7 @@ class Protocol(models.Model):
     )
     rejection_reason = models.TextField(blank=True)
     final_pdf_url = models.URLField(blank=True)
+    nca_layer_transaction_id = models.CharField(max_length=255, blank=True)
 
     def __str__(self) -> str:
         return f"Protocol {self.id}"

@@ -39,6 +39,16 @@ class WorkCardSerializer(serializers.ModelSerializer):
         model = models.WorkCard
         fields = "__all__"
 
+    def validate(self, attrs):
+        status = attrs.get("status")
+        if status == models.WorkCardStatus.COMPLETED:
+            raw_data = attrs.get("raw_data_json")
+            if not raw_data:
+                raise serializers.ValidationError(
+                    "Для завершенной рабочей карты требуется raw_data_json."
+                )
+        return attrs
+
 
 class ProtocolSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,6 +56,15 @@ class ProtocolSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
+        generation_method = attrs.get("generation_method")
+        if generation_method == "ai" and not attrs.get("generated_content"):
+            raise serializers.ValidationError(
+                "Для AI-генерации требуется заполненный generated_content."
+            )
+        if generation_method == "manual" and not attrs.get("manual_content"):
+            raise serializers.ValidationError(
+                "Для ручного заполнения требуется manual_content."
+            )
         work_card = attrs.get("work_card")
         if work_card:
             inspector = work_card.inspector
